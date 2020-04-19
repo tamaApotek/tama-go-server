@@ -2,6 +2,8 @@ package handler
 
 import (
 	"context"
+	"time"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/tamaApotek/tama-go-server/user"
@@ -13,8 +15,8 @@ type UserHandler struct {
 }
 
 // NewUserHandler will initiate user/ resources endpoint
-func NewUserHandler(r *gin.Engine) {
-	handler := &UserHandler{}
+func NewUserHandler(r *gin.Engine, userUsecase user.Usecase) {
+	handler := &UserHandler{userUsecase}
 
 	r.GET("/users/:uid", handler.FindByUID)
 }
@@ -22,7 +24,8 @@ func NewUserHandler(r *gin.Engine) {
 func (u *UserHandler) FindByUID(c *gin.Context) {
 	uid := c.Param("uid")
 
-	ctx := context.TODO()
+	ctx, _ := context.WithTimeout(c, 3*time.Second)
+
 	user, err := u.userUsecase.FindByUID(ctx, uid)
 	if err != nil {
 		c.JSON(500, err)

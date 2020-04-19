@@ -23,7 +23,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ctx, _ = context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, _ = context.WithTimeout(context.Background(), 3*time.Second)
 	err = client.Ping(ctx, readpref.Primary())
 
 	if err != nil {
@@ -37,7 +37,7 @@ func main() {
 
 	r := gin.Default()
 
-	handler.NewUserHandler(r)
+	handler.NewUserHandler(r, userUsecase)
 
 	log.Fatal(r.Run())
 }
