@@ -58,3 +58,21 @@ func (um *userMongo) FindByID(ctx context.Context, UID string) (user *models.Use
 	err = q.Decode(&user)
 	return user, nil
 }
+
+func (um *userMongo) FindByEmail(ctx context.Context, email string) (*models.User, error) {
+	q := um.col.FindOne(ctx, bson.D{
+		{
+			Key: "email", Value: email,
+		},
+	})
+
+	err := q.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	user := new(models.User)
+	err = q.Decode(user)
+
+	return user, err
+}
