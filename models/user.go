@@ -5,10 +5,10 @@ import (
 )
 
 // User represent User model
-// UID used to store uid from auth service
+// AuthID used to store uid from auth service
 // ID used to store user profile document id in database
 type User struct {
-	UID         string              `json:"uid" bson:"uid"`
+	AuthID      string              `json:"uid" bson:"uid"`
 	ID          *primitive.ObjectID `json:"id" bson:"_id"`
 	FullName    string              `json:"full_name" bson:"full_name" validate:"required"`
 	Role        string              `json:"role" bson:"role"`

@@ -34,11 +34,11 @@ func (um *userMongo) Create(ctx context.Context, user *models.User) (string, err
 	return user.ID.Hex(), nil
 }
 
-func (um *userMongo) UpdateByUID(ctx context.Context, user *models.User) error {
+func (um *userMongo) UpdateOne(ctx context.Context, user *models.User) error {
 	res := um.col.FindOneAndUpdate(
 		ctx, bson.D{
 			{
-				Key: "uid", Value: user.UID,
+				Key: "_id", Value: user.ID,
 			},
 		}, user)
 
@@ -47,7 +47,7 @@ func (um *userMongo) UpdateByUID(ctx context.Context, user *models.User) error {
 	return err
 }
 
-func (um *userMongo) FindByUID(ctx context.Context, UID string) (user *models.User, err error) {
+func (um *userMongo) FindByID(ctx context.Context, UID string) (user *models.User, err error) {
 	q := um.col.FindOne(ctx, bson.D{{Key: "uid", Value: UID}})
 	err = q.Err()
 

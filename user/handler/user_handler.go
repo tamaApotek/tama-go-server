@@ -18,15 +18,15 @@ type UserHandler struct {
 func NewUserHandler(r *gin.Engine, userUsecase user.Usecase) {
 	handler := &UserHandler{userUsecase}
 
-	r.GET("/users/:uid", handler.FindByUID)
+	r.GET("/users/:user_id", handler.FindByID)
 }
 
-func (u *UserHandler) FindByUID(c *gin.Context) {
-	uid := c.Param("uid")
+func (u *UserHandler) FindByID(c *gin.Context) {
+	uid := c.Param("user_id")
 
 	ctx, _ := context.WithTimeout(c, 3*time.Second)
 
-	user, err := u.userUsecase.FindByUID(ctx, uid)
+	user, err := u.userUsecase.FindByID(ctx, uid)
 	if err != nil {
 		c.JSON(500, err)
 		return

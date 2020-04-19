@@ -9,6 +9,6 @@ import (
 // Usecase represent User Usecase
 type Usecase interface {
 	Create(ctx context.Context, user *models.User) (string, error)
-	UpdateByUID(ctx context.Context, user *models.User) error
-	FindByUID(ctx context.Context, uid string) (user *models.User, err error)
+	UpdateOne(ctx context.Context, user *models.User) error
+	FindByID(ctx context.Context, id string) (user *models.User, err error)
 }
