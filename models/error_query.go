@@ -6,7 +6,7 @@ type ErrorQuery struct {
 	err     error
 }
 
-type errorCode = string
+type errorCode string
 
 type errorEnum struct {
 	Internal errorCode

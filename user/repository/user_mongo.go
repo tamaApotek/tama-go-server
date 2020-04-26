@@ -14,8 +14,8 @@ type userMongo struct {
 	col *mongo.Collection
 }
 
-func NewUserMongo(c *mongo.Client) user.Repository {
-	col := c.Database("tama").Collection("user")
+func NewUserMongo(db *mongo.Database) user.Repository {
+	col := db.Collection("user")
 	return &userMongo{col}
 }
 

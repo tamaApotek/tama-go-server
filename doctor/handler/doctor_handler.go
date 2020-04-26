@@ -15,7 +15,7 @@ type doctorHandler struct {
 	doctorUsecase doctor.Usecase
 }
 
-func NewDoctorHandler(r *gin.Engine, doctorUsecase doctor.Usecase) {
+func NewDoctorHandler(r *gin.RouterGroup, doctorUsecase doctor.Usecase) {
 	handler := &doctorHandler{doctorUsecase}
 
 	r.POST("/", handler.Add)
