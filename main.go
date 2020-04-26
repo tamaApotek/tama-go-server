@@ -1,15 +1,11 @@
 package main
 
 import (
-	"context"
 	"log"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 
+	"github.com/tamaApotek/tama-go-server/config"
 	_doctorHandler "github.com/tamaApotek/tama-go-server/doctor/handler"
 	_doctorUsecase "github.com/tamaApotek/tama-go-server/doctor/usecase"
 	_userHandler "github.com/tamaApotek/tama-go-server/user/handler"
@@ -17,22 +13,8 @@ import (
 	_userUsecase "github.com/tamaApotek/tama-go-server/user/usecase"
 )
 
-func init() {
-
-}
-
 func main() {
-	clientOpt := options.Client().ApplyURI("mongodb://localhost/27107")
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	client, err := mongo.Connect(ctx, clientOpt)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx, _ = context.WithTimeout(context.Background(), 3*time.Second)
-	err = client.Ping(ctx, readpref.Primary())
-
+	client, err := config.InitMongo("mongodb://localhost/27107")
 	if err != nil {
 		log.Fatal(err)
 	}
