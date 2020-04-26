@@ -28,7 +28,16 @@ func (u *userUsecase) UpdateOne(c context.Context, user *models.User) error {
 }
 
 func (u *userUsecase) FindByID(c context.Context, id string) (user *models.User, err error) {
-	ctx := context.TODO()
 
-	return u.userRepo.FindByID(ctx, id)
+	return u.userRepo.FindByID(c, id)
+}
+
+func (u *userUsecase) SearchText(ctx context.Context, queryString string) ([]*models.User, error) {
+	if queryString == "" {
+		return nil, models.NewErrorQuery("Invalid search parameter", models.ErrorEnum.Invalid, nil)
+	}
+
+	// TODO: Search condition?
+
+	return u.userRepo.SearchText(ctx, queryString)
 }

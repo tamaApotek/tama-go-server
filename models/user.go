@@ -10,8 +10,8 @@ import (
 type User struct {
 	AuthID      string              `json:"uid" bson:"uid"`
 	ID          *primitive.ObjectID `json:"id" bson:"_id"`
-	FullName    string              `json:"full_name" bson:"full_name" validate:"required"`
 	Role        string              `json:"role" bson:"role"`
+	FullName    string              `json:"full_name" bson:"full_name" validate:"required"`
 	Email       string              `json:"email" bson:"email"`
 	PhoneNumber string              `json:"phone_number" bson:"phone_number"`
 }

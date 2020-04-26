@@ -12,4 +12,5 @@ type Repository interface {
 	UpdateOne(ctx context.Context, user *models.User) error
 	FindByID(ctx context.Context, uid string) (res *models.User, err error)
 	FindByEmail(ctx context.Context, email string) (*models.User, error)
+	SearchText(ctx context.Context, queryString string) ([]*models.User, error)
 }
