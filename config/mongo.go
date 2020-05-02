@@ -25,5 +25,5 @@ func InitMongo(dbUrl string) (*mongo.Client, error) {
 		return nil, err
 	}
 
-	return clients
+	return client, nil
 }

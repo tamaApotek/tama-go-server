@@ -7,7 +7,16 @@ const (
 	// UserRoleAdmin represent "admin" enum
 	UserRoleAdmin UserRole = "admin"
 	// UserRoleDoctor represent "doctor" enum
-	UserRoleDoctor = "doctor"
+	UserRoleDoctor UserRole = "doctor"
 	// UserRolePatient represent "patient" enum
-	UserRolePatient = "patient"
+	UserRolePatient UserRole = "patient"
 )
+
+func (ur *UserRole) IsValid() bool {
+	switch *ur {
+	case UserRoleAdmin, UserRoleDoctor, UserRolePatient:
+		return true
+	default:
+		return false
+	}
+}

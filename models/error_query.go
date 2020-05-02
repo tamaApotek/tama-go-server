@@ -1,12 +1,12 @@
 package models
 
+type errorCode string
+
 type ErrorQuery struct {
 	message string
-	code    string
+	code    errorCode
 	err     error
 }
-
-type errorCode string
 
 type errorEnum struct {
 	Internal errorCode
