@@ -2,9 +2,7 @@ package doctor
 
 import (
 	"context"
-	"github.com/tamaApotek/tama-go-server/constants"
-	"github.com/tamaApotek/tama-go-server/models"
-	"github.com/tamaApotek/tama-go-server/user"
+	"github.com/tamaApotek/tama-go-server/domains/user"
 )
 
 // Usecase represent Doctor's usecase contract
@@ -23,8 +21,8 @@ func NewUsecase(doctorRepo Repository, userRepo user.Repository) Usecase {
 }
 
 func (uc *usecase) Add(ctx context.Context, doctor *Doctor) (string, error) {
-	u := &models.User{
-		Role:     constants.UserRoleDoctor,
+	u := &user.User{
+		Role:     user.RoleDoctor,
 		FullName: doctor.FullName,
 	}
 

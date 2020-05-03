@@ -3,7 +3,7 @@ package helpers
 import (
 	"errors"
 	"fmt"
-	"github.com/tamaApotek/tama-go-server/query"
+	"github.com/tamaApotek/tama-go-server/domains/query"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

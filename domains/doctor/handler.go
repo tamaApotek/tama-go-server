@@ -13,7 +13,7 @@ type doctorHandler struct {
 	doctorUsecase Usecase
 }
 
-func NewDoctorHandler(r *gin.RouterGroup, doctorUsecase Usecase) {
+func NewHandler(r *gin.RouterGroup, doctorUsecase Usecase) {
 	handler := &doctorHandler{doctorUsecase}
 
 	r.POST("/", handler.Add)

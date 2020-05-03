@@ -1,6 +1,6 @@
 package models
 
-import "github.com/tamaApotek/tama-go-server/query"
+import "github.com/tamaApotek/tama-go-server/domains/query"
 
 type Response struct {
 	Message string          `json:"message"`

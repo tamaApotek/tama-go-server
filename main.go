@@ -1,15 +1,13 @@
 package main
 
 import (
-	"github.com/tamaApotek/tama-go-server/doctor"
 	"log"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/tamaApotek/tama-go-server/config"
-	_userHandler "github.com/tamaApotek/tama-go-server/user/handler"
-	_userRepo "github.com/tamaApotek/tama-go-server/user/repository"
-	_userUsecase "github.com/tamaApotek/tama-go-server/user/usecase"
+	"github.com/tamaApotek/tama-go-server/domains/doctor"
+	"github.com/tamaApotek/tama-go-server/domains/user"
 )
 
 func main() {
@@ -20,17 +18,16 @@ func main() {
 
 	db := client.Database("tama")
 
-	userRepo := _userRepo.NewUserMongo(db)
+	userRepo := user.NewRepoMongo(db)
 	doctorRepo := doctor.NewRepoMongo(db)
 
-	userUsecase := _userUsecase.NewUserUsecase(userRepo)
-
-	doctorUsecase := doctor.NewUsecase(userRepo, doctorRepo)
+	userUsecase := user.NewUsecase(userRepo)
+	doctorUsecase := doctor.NewUsecase(doctorRepo, userRepo)
 
 	r := gin.Default()
 
-	_userHandler.NewUserHandler(r.Group("/users"), userUsecase)
-	doctor.NewDoctorHandler(r.Group("/doctors"), doctorUsecase)
+	user.NewHandler(r.Group("/users"), userUsecase)
+	doctor.NewHandler(r.Group("/doctors"), doctorUsecase)
 
 	log.Fatal(r.Run())
 }
