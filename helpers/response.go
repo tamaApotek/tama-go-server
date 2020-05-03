@@ -3,6 +3,7 @@ package helpers
 import (
 	"errors"
 	"fmt"
+	"github.com/tamaApotek/tama-go-server/query"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,7 @@ func HandleErrorResponse(c *gin.Context, err error) {
 		Message: err.Error(),
 	}
 
-	var e *models.ErrorQuery
+	var e *query.ErrorQuery
 	if errors.As(err, &e) {
 		// debugging purpose
 		fmt.Print(errors.Unwrap(err))

@@ -1,16 +1,16 @@
-package models
+package query
 
-type errorCode string
+type ErrorCode string
 
 type ErrorQuery struct {
 	message string
-	code    errorCode
+	code    ErrorCode
 	err     error
 }
 
 type errorEnum struct {
-	Internal errorCode
-	Invalid  errorCode
+	Internal ErrorCode
+	Invalid  ErrorCode
 }
 
 var ErrorEnum = &errorEnum{
@@ -18,7 +18,7 @@ var ErrorEnum = &errorEnum{
 	Invalid:  "invalid",
 }
 
-func NewErrorQuery(message string, code errorCode, err error) *ErrorQuery {
+func NewErrorQuery(message string, code ErrorCode, err error) *ErrorQuery {
 	return &ErrorQuery{message, code, err}
 }
 
@@ -30,7 +30,7 @@ func (eq *ErrorQuery) Unwrap() error {
 	return eq.err
 }
 
-// Code return error code based on ErrorEnum
-func (eq *ErrorQuery) Code() errorCode {
+// Code return query code based on ErrorEnum
+func (eq *ErrorQuery) Code() ErrorCode {
 	return eq.code
 }

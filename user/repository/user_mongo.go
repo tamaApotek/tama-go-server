@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	error2 "github.com/tamaApotek/tama-go-server/query"
 
 	"github.com/tamaApotek/tama-go-server/models"
 	"github.com/tamaApotek/tama-go-server/user"
@@ -23,7 +24,7 @@ func (um *userMongo) Create(ctx context.Context, user *models.User) (string, err
 	res, err := um.col.InsertOne(ctx, user)
 
 	if err != nil {
-		return "", models.NewErrorQuery("Failed creating new document", models.ErrorEnum.Internal, err)
+		return "", error2.NewErrorQuery("Failed creating new document", error2.ErrorEnum.Internal, err)
 	}
 
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
@@ -43,7 +44,7 @@ func (um *userMongo) UpdateOne(ctx context.Context, user *models.User) error {
 
 	err := res.Err()
 	if err != nil {
-		return models.NewErrorQuery("Failed updating document", models.ErrorEnum.Internal, err)
+		return error2.NewErrorQuery("Failed updating document", error2.ErrorEnum.Internal, err)
 	}
 
 	return nil
@@ -71,13 +72,13 @@ func (um *userMongo) FindByEmail(ctx context.Context, email string) (*models.Use
 
 	err := q.Err()
 	if err != nil {
-		return nil, models.NewErrorQuery("Failed finding document", models.ErrorEnum.Internal, err)
+		return nil, error2.NewErrorQuery("Failed finding document", error2.ErrorEnum.Internal, err)
 	}
 
 	user := new(models.User)
 	err = q.Decode(user)
 	if err != nil {
-		return nil, models.NewErrorQuery("Unknown error occured", models.ErrorEnum.Internal, err)
+		return nil, error2.NewErrorQuery("Unknown query occured", error2.ErrorEnum.Internal, err)
 	}
 
 	return user, nil
@@ -96,7 +97,7 @@ func (um *userMongo) SearchText(ctx context.Context, queryString string) ([]*mod
 	defer q.Close(ctx)
 
 	if err != nil {
-		return nil, models.NewErrorQuery("Unknown error occured", models.ErrorEnum.Internal, err)
+		return nil, error2.NewErrorQuery("Unknown query occured", error2.ErrorEnum.Internal, err)
 	}
 
 	var users []*models.User

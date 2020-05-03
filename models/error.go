@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	// ErrInternal Internal server error
+	// ErrInternal Internal server query
 	ErrInternal = errors.New("internal")
 	// ErrEmpty Requested data is null
 	ErrEmpty = errors.New("empty")

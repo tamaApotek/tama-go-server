@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"github.com/tamaApotek/tama-go-server/query"
 
 	"github.com/tamaApotek/tama-go-server/models"
 	"github.com/tamaApotek/tama-go-server/user"
@@ -34,7 +35,7 @@ func (u *userUsecase) FindByID(c context.Context, id string) (user *models.User,
 
 func (u *userUsecase) SearchText(ctx context.Context, queryString string) ([]*models.User, error) {
 	if queryString == "" {
-		return nil, models.NewErrorQuery("Invalid search parameter", models.ErrorEnum.Invalid, nil)
+		return nil, query.NewErrorQuery("Invalid search parameter", query.ErrorEnum.Invalid, nil)
 	}
 
 	// TODO: Search condition?
