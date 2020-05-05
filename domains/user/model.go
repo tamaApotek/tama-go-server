@@ -1,6 +1,7 @@
 package user
 
 import (
+	"github.com/tamaApotek/tama-go-server/domains/role"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -10,7 +11,7 @@ import (
 type User struct {
 	AuthID      string              `json:"auth_id" bson:"auth_id"`
 	ID          *primitive.ObjectID `json:"id" bson:"_id"`
-	Role        Role                `json:"role" bson:"role"`
+	Role        role.Role           `json:"role" bson:"role"`
 	FullName    string              `json:"full_name" bson:"full_name" validate:"required"`
 	Email       string              `json:"email" bson:"email"`
 	PhoneNumber string              `json:"phone_number" bson:"phone_number"`

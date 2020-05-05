@@ -2,6 +2,7 @@ package doctor
 
 import (
 	"context"
+	"github.com/tamaApotek/tama-go-server/domains/role"
 	"github.com/tamaApotek/tama-go-server/domains/user"
 )
 
@@ -22,7 +23,7 @@ func NewUsecase(doctorRepo Repository, userRepo user.Repository) Usecase {
 
 func (uc *usecase) Add(ctx context.Context, doctor *Doctor) (string, error) {
 	u := &user.User{
-		Role:     user.RoleDoctor,
+		Role:     role.Doctor,
 		FullName: doctor.FullName,
 	}
 

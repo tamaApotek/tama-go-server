@@ -1,20 +1,20 @@
-package user
+package role
 
 // Role represent string definition User's Role enum
 type Role string
 
 const (
 	// UserRoleAdmin represent "admin" enum
-	RoleAdmin Role = "admin"
+	Admin Role = "admin"
 	// UserRoleDoctor represent "doctor" enum
-	RoleDoctor Role = "doctor"
+	Doctor Role = "doctor"
 	// UserRolePatient represent "patient" enum
-	RolePatient Role = "patient"
+	Patient Role = "patient"
 )
 
 func (ur *Role) IsValid() bool {
 	switch *ur {
-	case RoleAdmin, RoleDoctor, RolePatient:
+	case Admin, Doctor, Patient:
 		return true
 	default:
 		return false
