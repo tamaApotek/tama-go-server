@@ -3,15 +3,15 @@ package helpers
 import (
 	"errors"
 	"fmt"
-	"github.com/tamaApotek/tama-go-server/domains/query"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tamaApotek/tama-go-server/models"
+
+	"github.com/tamaApotek/tama-go-server/domains/query"
 )
 
 func HandleSuccessResponse(c *gin.Context, data interface{}) {
-	response := models.Response{
+	response := query.Response{
 		Message: "success",
 		Data:    data,
 	}
@@ -20,7 +20,7 @@ func HandleSuccessResponse(c *gin.Context, data interface{}) {
 }
 
 func HandleErrorResponse(c *gin.Context, err error) {
-	response := models.Response{
+	response := query.Response{
 		Message: err.Error(),
 	}
 
