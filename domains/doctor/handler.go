@@ -6,7 +6,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/tamaApotek/tama-go-server/helpers"
+	"github.com/tamaApotek/tama-go-server/domains/apperror"
+	"github.com/tamaApotek/tama-go-server/domains/query"
 )
 
 type doctorHandler struct {
@@ -24,14 +25,15 @@ func (d *doctorHandler) Add(c *gin.Context) {
 
 	doctor := new(Doctor)
 	if err := c.ShouldBindJSON(doctor); err != nil {
-		helpers.HandleErrorResponse(c, err)
+		err = apperror.New("Invalid data", apperror.ErrInvalid, err)
+		query.HandleErrorResponse(c, err)
 		return
 	}
 
 	id, err := d.doctorUsecase.Add(ctx, doctor)
 	if err != nil {
-		helpers.HandleErrorResponse(c, err)
+		query.HandleErrorResponse(c, err)
 	}
 
-	helpers.HandleSuccessResponse(c, id)
+	query.HandleSuccessResponse(c, id)
 }

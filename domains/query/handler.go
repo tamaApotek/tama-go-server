@@ -1,4 +1,4 @@
-package helpers
+package query
 
 import (
 	"errors"
@@ -6,12 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/tamaApotek/tama-go-server/domains/query"
+	"github.com/tamaApotek/tama-go-server/domains/apperror"
 )
 
 func HandleSuccessResponse(c *gin.Context, data interface{}) {
-	response := query.Response{
+	response := Response{
 		Message: "success",
 		Data:    data,
 	}
@@ -20,11 +19,11 @@ func HandleSuccessResponse(c *gin.Context, data interface{}) {
 }
 
 func HandleErrorResponse(c *gin.Context, err error) {
-	response := query.Response{
+	response := Response{
 		Message: err.Error(),
 	}
 
-	var e *query.ErrorQuery
+	var e *apperror.AppError
 	if errors.As(err, &e) {
 		// debugging purpose
 		fmt.Print(errors.Unwrap(err))

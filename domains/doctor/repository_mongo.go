@@ -2,7 +2,8 @@ package doctor
 
 import (
 	"context"
-	"github.com/tamaApotek/tama-go-server/domains/query"
+
+	"github.com/tamaApotek/tama-go-server/domains/apperror"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -20,7 +21,7 @@ func NewRepoMongo(db *mongo.Database) Repository {
 func (dm *doctorMongo) Add(ctx context.Context, doctor *Doctor) (string, error) {
 	res, err := dm.col.InsertOne(ctx, doctor)
 	if err != nil {
-		return "", query.NewErrorQuery("Internal server error", query.ErrorEnum.Internal, err)
+		return "", apperror.New("Internal server error", apperror.ErrInternal, err)
 	}
 
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {

@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/tamaApotek/tama-go-server/domains/query"
+	"github.com/tamaApotek/tama-go-server/domains/apperror"
 )
 
 type userMongo struct {
@@ -23,7 +23,7 @@ func (um *userMongo) Create(ctx context.Context, user *User) (string, error) {
 	res, err := um.col.InsertOne(ctx, user)
 
 	if err != nil {
-		return "", query.NewErrorQuery("Failed creating new document", query.ErrorEnum.Internal, err)
+		return "", apperror.New("Failed creating new document", apperror.ErrInternal, err)
 	}
 
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
@@ -43,7 +43,7 @@ func (um *userMongo) UpdateOne(ctx context.Context, user *User) error {
 
 	err := res.Err()
 	if err != nil {
-		return query.NewErrorQuery("Failed updating document", query.ErrorEnum.Internal, err)
+		return apperror.New("Failed updating document", apperror.ErrInternal, err)
 	}
 
 	return nil
@@ -71,13 +71,13 @@ func (um *userMongo) FindByEmail(ctx context.Context, email string) (*User, erro
 
 	err := q.Err()
 	if err != nil {
-		return nil, query.NewErrorQuery("Failed finding document", query.ErrorEnum.Internal, err)
+		return nil, apperror.New("Failed finding document", apperror.ErrInternal, err)
 	}
 
 	user := new(User)
 	err = q.Decode(user)
 	if err != nil {
-		return nil, query.NewErrorQuery("Unknown query occured", query.ErrorEnum.Internal, err)
+		return nil, apperror.New("Unknown query occured", apperror.ErrInternal, err)
 	}
 
 	return user, nil
@@ -99,7 +99,7 @@ func (um *userMongo) SearchText(ctx context.Context, queryString string) ([]*Use
 	}()
 
 	if err != nil {
-		return nil, query.NewErrorQuery("Unknown query occured", query.ErrorEnum.Internal, err)
+		return nil, apperror.New("Unknown query occured", apperror.ErrInternal, err)
 	}
 
 	var users []*User
