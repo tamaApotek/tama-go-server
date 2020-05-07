@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/tamaApotek/tama-go-server/config"
+	"github.com/tamaApotek/tama-go-server/delivery"
 	"github.com/tamaApotek/tama-go-server/domains/doctor"
 	"github.com/tamaApotek/tama-go-server/domains/user"
 )
@@ -34,8 +35,10 @@ func main() {
 	// router.Use(cors.New(config))
 	r.Use(cors.Default())
 
+	d := delivery.Delivery{}
+
 	user.NewHandler(r.Group("/users"), userUsecase)
-	doctor.NewHandler(r.Group("/doctors"), doctorUsecase)
+	doctor.NewHandler(r.Group("/doctors"), d, doctorUsecase)
 
 	log.Fatal(r.Run())
 }
