@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/DataDog/zstd v1.4.5 // indirect
-	github.com/gin-contrib/cors v1.3.1 // indirect
+	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect

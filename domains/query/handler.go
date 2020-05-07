@@ -19,19 +19,11 @@ func HandleSuccessResponse(c *gin.Context, data interface{}) {
 }
 
 func HandleErrorResponse(c *gin.Context, err error) {
-	response := Response{
-		Message: err.Error(),
-	}
-
-	var e *apperror.AppError
-	if errors.As(err, &e) {
-		// debugging purpose
-		fmt.Print(errors.Unwrap(err))
-
-		response.Code = e.Code()
-
-		c.JSON(http.StatusInternalServerError, response)
-	} else {
-		c.JSON(http.StatusInternalServerError, response)
+	switch {
+	case errors.Is(err, apperror.ErrInvalid):
+		c.JSON(400, gin.H{"message": apperror.ErrInvalid.Error()})
+	default:
+		fmt.Printf("[ERROR] %+v", err)
+		c.JSON(500, gin.H{"message": apperror.ErrInternal.Error()})
 	}
 }

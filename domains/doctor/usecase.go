@@ -3,7 +3,6 @@ package doctor
 import (
 	"context"
 
-	"github.com/tamaApotek/tama-go-server/domains/apperror"
 	"github.com/tamaApotek/tama-go-server/domains/role"
 	"github.com/tamaApotek/tama-go-server/domains/user"
 )
@@ -25,28 +24,21 @@ func NewUsecase(doctorRepo Repository, userRepo user.Repository) Usecase {
 
 func (uc *usecase) Add(ctx context.Context, doctor *Doctor) (string, error) {
 	var err error
-	if doctor.Specialist == "" {
-		err = apperror.New(
-			"Invalid Title",
-			apperror.ErrInvalid,
-			nil,
-		)
-
-		return "", err
-	}
 
 	u := &user.User{
 		Role:     role.Doctor,
 		FullName: doctor.FullName,
 	}
 
-	userID, err := uc.userRepo.Create(ctx, u)
+	_, err = uc.userRepo.Create(ctx, u)
 	if err != nil {
 		return "", err
 	}
 
+	doctorID, err := uc.doctorRepo.Add(ctx, doctor)
+
 	// TODO: Check specialist exists
 	// TODO: Add to doctor collection
 
-	return userID, nil
+	return doctorID, nil
 }

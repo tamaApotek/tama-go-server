@@ -2,12 +2,11 @@ package user
 
 import (
 	"context"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-
-	"github.com/tamaApotek/tama-go-server/domains/apperror"
 )
 
 type userMongo struct {
@@ -15,7 +14,7 @@ type userMongo struct {
 }
 
 func NewRepoMongo(db *mongo.Database) Repository {
-	col := db.Collection("user")
+	col := db.Collection("users")
 	return &userMongo{col}
 }
 
@@ -23,11 +22,13 @@ func (um *userMongo) Create(ctx context.Context, user *User) (string, error) {
 	res, err := um.col.InsertOne(ctx, user)
 
 	if err != nil {
-		return "", apperror.New("Failed creating new document", apperror.ErrInternal, err)
+		return "", err
 	}
 
+	fmt.Printf("created user ====> %+v\n", res)
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
-		user.ID = &oid
+		fmt.Printf("user oid ======> %+v\n", oid)
+		user.ID = oid
 	}
 
 	return user.ID.Hex(), nil
@@ -42,11 +43,8 @@ func (um *userMongo) UpdateOne(ctx context.Context, user *User) error {
 		}, user)
 
 	err := res.Err()
-	if err != nil {
-		return apperror.New("Failed updating document", apperror.ErrInternal, err)
-	}
 
-	return nil
+	return err
 }
 
 func (um *userMongo) FindByID(ctx context.Context, UID string) (user *User, err error) {
@@ -59,7 +57,7 @@ func (um *userMongo) FindByID(ctx context.Context, UID string) (user *User, err 
 	}
 
 	err = q.Decode(&user)
-	return user, nil
+	return user, err
 }
 
 func (um *userMongo) FindByEmail(ctx context.Context, email string) (*User, error) {
@@ -71,16 +69,13 @@ func (um *userMongo) FindByEmail(ctx context.Context, email string) (*User, erro
 
 	err := q.Err()
 	if err != nil {
-		return nil, apperror.New("Failed finding document", apperror.ErrInternal, err)
+		return nil, err
 	}
 
 	user := new(User)
 	err = q.Decode(user)
-	if err != nil {
-		return nil, apperror.New("Unknown query occured", apperror.ErrInternal, err)
-	}
 
-	return user, nil
+	return user, err
 }
 
 func (um *userMongo) SearchText(ctx context.Context, queryString string) ([]*User, error) {
@@ -99,7 +94,7 @@ func (um *userMongo) SearchText(ctx context.Context, queryString string) ([]*Use
 	}()
 
 	if err != nil {
-		return nil, apperror.New("Unknown query occured", apperror.ErrInternal, err)
+		return nil, err
 	}
 
 	var users []*User

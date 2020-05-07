@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/tamaApotek/tama-go-server/domains/apperror"
 )
@@ -41,10 +42,9 @@ func (u *userUsecase) FindByID(c context.Context, id string) (user *User, err er
 
 func (u *userUsecase) SearchText(ctx context.Context, queryString string) ([]*User, error) {
 	if queryString == "" {
-		return nil, apperror.New("Invalid search parameter", apperror.ErrInvalid, nil)
+		return nil, fmt.Errorf("Invalid query parameter: %w", apperror.ErrInvalid)
 	}
 
 	// TODO: Search condition?
-
 	return u.userRepo.SearchText(ctx, queryString)
 }
