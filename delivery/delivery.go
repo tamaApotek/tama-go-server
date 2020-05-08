@@ -13,7 +13,7 @@ import (
 type Delivery struct {
 }
 
-type response struct {
+type Response struct {
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
 }
@@ -21,7 +21,7 @@ type response struct {
 type MyHandler func(c *gin.Context) (interface{}, error)
 
 func handleSuccessResponse(c *gin.Context, data interface{}) {
-	r := response{
+	r := Response{
 		Message: "success",
 		Data:    data,
 	}
@@ -30,11 +30,12 @@ func handleSuccessResponse(c *gin.Context, data interface{}) {
 }
 
 func handleErrorResponse(c *gin.Context, err error) {
+	fmt.Printf("[ERROR] %+v", err)
+
 	switch {
 	case errors.Is(err, apperror.ErrInvalid):
 		c.JSON(400, gin.H{"message": apperror.ErrInvalid.Error()})
 	default:
-		fmt.Printf("[ERROR] %+v", err)
 		c.JSON(500, gin.H{"message": apperror.ErrInternal.Error()})
 	}
 }

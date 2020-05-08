@@ -9,6 +9,7 @@ import (
 	"github.com/tamaApotek/tama-go-server/config"
 	"github.com/tamaApotek/tama-go-server/delivery"
 	"github.com/tamaApotek/tama-go-server/domains/doctor"
+	"github.com/tamaApotek/tama-go-server/domains/queue"
 	"github.com/tamaApotek/tama-go-server/domains/user"
 )
 
@@ -22,9 +23,11 @@ func main() {
 
 	userRepo := user.NewRepoMongo(db)
 	doctorRepo := doctor.NewRepoMongo(db)
+	queueRepo := queue.NewRepoMongo(db)
 
 	userUsecase := user.NewUsecase(userRepo)
 	doctorUsecase := doctor.NewUsecase(doctorRepo, userRepo)
+	queueUsecase := queue.NewUsecase(queueRepo, doctorRepo)
 
 	r := gin.New()
 	r.Use(gin.Logger())
@@ -39,6 +42,7 @@ func main() {
 
 	user.NewHandler(r.Group("/users"), userUsecase)
 	doctor.NewHandler(r.Group("/doctors"), d, doctorUsecase)
+	queue.NewHandler(r.Group("/queues"), d, queueUsecase)
 
 	log.Fatal(r.Run())
 }

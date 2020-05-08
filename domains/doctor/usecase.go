@@ -30,10 +30,12 @@ func (uc *usecase) Add(ctx context.Context, doctor *Doctor) (string, error) {
 		FullName: doctor.FullName,
 	}
 
-	_, err = uc.userRepo.Create(ctx, u)
+	userID, err := uc.userRepo.Create(ctx, u)
 	if err != nil {
 		return "", err
 	}
+
+	doctor.UserID = userID
 
 	doctorID, err := uc.doctorRepo.Add(ctx, doctor)
 

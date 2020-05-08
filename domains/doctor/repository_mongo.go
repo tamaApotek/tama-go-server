@@ -3,6 +3,7 @@ package doctor
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -24,8 +25,20 @@ func (dm *doctorMongo) Add(ctx context.Context, doctor *Doctor) (string, error) 
 	}
 
 	if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
-		doctor.ID = oid
+		doctor.ID = &oid
 	}
 
 	return doctor.ID.Hex(), nil
+}
+
+func (dm *doctorMongo) FindByID(ctx context.Context, id primitive.ObjectID) (*Doctor, error) {
+	res := dm.col.FindOne(ctx, bson.M{"_id": id})
+	err := res.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	var doctor Doctor
+	err = res.Decode(&doctor)
+	return &doctor, err
 }
