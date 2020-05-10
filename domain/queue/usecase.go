@@ -3,7 +3,7 @@ package queue
 import (
 	"context"
 
-	"github.com/tamaApotek/tama-go-server/domains/doctor"
+	"github.com/tamaApotek/tama-go-server/domain/doctor"
 )
 
 type usecase struct {

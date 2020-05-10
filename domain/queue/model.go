@@ -6,7 +6,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/tamaApotek/tama-go-server/domains/datestr"
+	"github.com/tamaApotek/tama-go-server/domain/datestr"
 )
 
 // Queue represent daily patient queue

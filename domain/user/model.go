@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/tamaApotek/tama-go-server/domains/role"
+	"github.com/tamaApotek/tama-go-server/domain/role"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

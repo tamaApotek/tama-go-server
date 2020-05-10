@@ -3,8 +3,8 @@ package doctor
 import (
 	"context"
 
-	"github.com/tamaApotek/tama-go-server/domains/role"
-	"github.com/tamaApotek/tama-go-server/domains/user"
+	"github.com/tamaApotek/tama-go-server/domain/role"
+	"github.com/tamaApotek/tama-go-server/domain/user"
 )
 
 // Usecase represent Doctor's usecase contract

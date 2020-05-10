@@ -8,9 +8,9 @@ import (
 
 	"github.com/tamaApotek/tama-go-server/config"
 	"github.com/tamaApotek/tama-go-server/delivery"
-	"github.com/tamaApotek/tama-go-server/domains/doctor"
-	"github.com/tamaApotek/tama-go-server/domains/queue"
-	"github.com/tamaApotek/tama-go-server/domains/user"
+	"github.com/tamaApotek/tama-go-server/domain/doctor"
+	"github.com/tamaApotek/tama-go-server/domain/queue"
+	"github.com/tamaApotek/tama-go-server/domain/user"
 )
 
 func main() {

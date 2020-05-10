@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/tamaApotek/tama-go-server/domains/apperror"
+	"github.com/tamaApotek/tama-go-server/domain/apperror"
 )
 
 // Usecase represent User Usecase

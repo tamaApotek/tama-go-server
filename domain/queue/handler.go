@@ -9,7 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/tamaApotek/tama-go-server/delivery"
-	"github.com/tamaApotek/tama-go-server/domains/apperror"
+	"github.com/tamaApotek/tama-go-server/domain/apperror"
 )
 
 type handler struct {

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tamaApotek/tama-go-server/domains/apperror"
+	"github.com/tamaApotek/tama-go-server/domain/apperror"
 )
 
 // Delivery provide http response handler helper
