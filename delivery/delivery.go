@@ -16,6 +16,7 @@ type Delivery struct {
 type Response struct {
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
+	Error   interface{} `json:"error,omitempty"`
 }
 
 type MyHandler func(c *gin.Context) (interface{}, error)

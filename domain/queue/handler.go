@@ -3,7 +3,6 @@ package queue
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -11,6 +10,8 @@ import (
 	"github.com/tamaApotek/tama-go-server/delivery"
 	"github.com/tamaApotek/tama-go-server/domain/apperror"
 )
+
+const validationFailed = "Queue validation failed"
 
 type handler struct {
 	queueUsecase Usecase
@@ -37,10 +38,10 @@ func handleError(c *gin.Context, err error) {
 			r.Message = err.Error()
 		}
 
-		c.JSON(400, r)
+		c.JSON(http.StatusBadRequest, r)
 	default:
 		r.Message = apperror.ErrInternal.Error()
-		c.JSON(500, r)
+		c.JSON(http.StatusInternalServerError, r)
 	}
 }
 
@@ -58,9 +59,8 @@ func (h *handler) Add(c *gin.Context) {
 
 	var queue Queue
 	if err := c.ShouldBindJSON(&queue); err != nil {
-		err = fmt.Errorf("Invalid data queue data: %w", err)
 
-		handleError(c, err)
+		c.JSON(http.StatusBadRequest, delivery.Response{Message: validationFailed, Error: err.Error()})
 		return
 	}
 
