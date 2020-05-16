@@ -22,16 +22,6 @@ func main() {
 
 	db := client.Database("tama")
 
-	userRepo := user.NewRepoMongo(db)
-	doctorRepo := doctor.NewRepoMongo(db)
-	queueRepo := queue.NewRepoMongo(db)
-
-	tz, _ := time.LoadLocation("Asia/Jakarta")
-
-	userUsecase := user.NewUsecase(userRepo)
-	doctorUsecase := doctor.NewUsecase(doctorRepo, userRepo)
-	queueUsecase := queue.NewUsecase(tz, queueRepo, doctorRepo)
-
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
@@ -42,6 +32,16 @@ func main() {
 	r.Use(cors.Default())
 
 	d := delivery.Delivery{}
+
+	userRepo := user.NewRepoMongo(db)
+	doctorRepo := doctor.NewRepoMongo(db)
+	queueRepo := queue.NewRepoMongo(db)
+
+	tz, _ := time.LoadLocation("Asia/Jakarta")
+
+	userUsecase := user.NewUsecase(userRepo)
+	doctorUsecase := doctor.NewUsecase(doctorRepo, userRepo)
+	queueUsecase := queue.NewUsecase(tz, queueRepo, doctorRepo)
 
 	user.NewHandler(r.Group("/users"), userUsecase)
 	doctor.NewHandler(r.Group("/doctors"), d, doctorUsecase)
