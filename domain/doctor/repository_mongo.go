@@ -2,6 +2,7 @@ package doctor
 
 import (
 	"context"
+	"errors"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -35,6 +36,10 @@ func (dm *doctorMongo) FindByID(ctx context.Context, id primitive.ObjectID) (*Do
 	res := dm.col.FindOne(ctx, bson.M{"_id": id})
 	err := res.Err()
 	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 

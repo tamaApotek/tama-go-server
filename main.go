@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -25,9 +26,11 @@ func main() {
 	doctorRepo := doctor.NewRepoMongo(db)
 	queueRepo := queue.NewRepoMongo(db)
 
+	tz, _ := time.LoadLocation("Asia/Jakarta")
+
 	userUsecase := user.NewUsecase(userRepo)
 	doctorUsecase := doctor.NewUsecase(doctorRepo, userRepo)
-	queueUsecase := queue.NewUsecase(queueRepo, doctorRepo)
+	queueUsecase := queue.NewUsecase(tz, queueRepo, doctorRepo)
 
 	r := gin.New()
 	r.Use(gin.Logger())

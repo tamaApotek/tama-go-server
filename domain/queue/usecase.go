@@ -2,11 +2,16 @@ package queue
 
 import (
 	"context"
+	"time"
 
 	"github.com/tamaApotek/tama-go-server/domain/doctor"
 )
 
+const dateFormat = "2006-01-02"
+
 type usecase struct {
+	tz *time.Location
+
 	queueRepo  Repository
 	doctorRepo doctor.Repository
 }
@@ -16,15 +21,16 @@ type Usecase interface {
 	Add(ctx context.Context, queue *Queue) (string, error)
 }
 
-func NewUsecase(queueRepo Repository, doctorRepo doctor.Repository) Usecase {
-	return &usecase{queueRepo, doctorRepo}
+// NewUsecase initiate queue usecase
+func NewUsecase(tz *time.Location, queueRepo Repository, doctorRepo doctor.Repository) Usecase {
+	return &usecase{tz, queueRepo, doctorRepo}
 }
 
 func (uc *usecase) Add(ctx context.Context, que *Queue) (string, error) {
-	// TODO: Validate date >= today
+	todayDate := time.Now().In(uc.tz).Format(dateFormat)
 
-	if que.DoctorID == nil {
-		return "", ErrInvalidDoctor
+	if que.Date < todayDate {
+		return "", ErrInvalidDate
 	}
 
 	doctor, err := uc.doctorRepo.FindByID(ctx, *que.DoctorID)

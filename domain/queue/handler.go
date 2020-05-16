@@ -3,6 +3,7 @@ package queue
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -40,6 +41,7 @@ func handleError(c *gin.Context, err error) {
 
 		c.JSON(http.StatusBadRequest, r)
 	default:
+		fmt.Printf("%+v\n", err)
 		r.Message = apperror.ErrInternal.Error()
 		c.JSON(http.StatusInternalServerError, r)
 	}
