@@ -30,5 +30,4 @@ func (qm *queueMongoRepo) Add(ctx context.Context, queue *Queue) (string, error)
 	}
 
 	return queue.ID.Hex(), nil
-
 }
