@@ -16,7 +16,7 @@ type Queue struct {
 	DoctorID *primitive.ObjectID `json:"doctor_id" bson:"doctor_id" binding:"required"`
 
 	// Date string YYYY-MM-DD
-	Date        string    `json:"date" bson:"date" binding:"datetime=2006-01-02"`
+	Date        string    `json:"date" bson:"date" binding:"required,datetime=2006-01-02"`
 	PatientName string    `json:"patient_name" bson:"patient_name"`
 	CreatedBy   string    `json:"created_by" bson:"created_by"`
 	UpdatedBy   string    `json:"updated_by" bson:"updated_by"`
