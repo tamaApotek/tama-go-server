@@ -1,12 +1,13 @@
 package delivery
 
 import (
+	"encoding/json"
 	"errors"
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/tamaApotek/tama-go-server/domain/apperror"
+	"github.com/tamaApotek/tama-go-server/common"
 )
 
 // Delivery provide http response handler helper
@@ -21,23 +22,36 @@ type Response struct {
 
 type MyHandler func(c *gin.Context) (interface{}, error)
 
-func handleSuccessResponse(c *gin.Context, data interface{}) {
+// HandleSuccessResponse handle success response 200 with data
+func HandleSuccessResponse(w http.ResponseWriter, data interface{}) {
 	r := Response{
 		Message: "success",
 		Data:    data,
 	}
 
-	c.JSON(http.StatusOK, r)
+	json.NewEncoder(w).Encode(r)
 }
 
-func handleErrorResponse(c *gin.Context, err error) {
-	fmt.Printf("[ERROR] %+v", err)
+func handleErrorResponse(w http.ResponseWriter, err error) {
+	r := Response{
+		Message: "failed",
+	}
 
 	switch {
-	case errors.Is(err, apperror.ErrInvalid):
-		c.JSON(400, gin.H{"message": apperror.ErrInvalid.Error()})
+	case errors.Is(err, common.ErrInvalid):
+		wrapped := errors.Unwrap(err)
+		if wrapped != nil {
+			r.Error = wrapped.Error()
+
+		} else {
+			r.Error = err.Error()
+		}
+
+		json.NewEncoder(w).Encode(r)
 	default:
-		c.JSON(500, gin.H{"message": apperror.ErrInternal.Error()})
+		log.Printf("[ERROR] %+v\n", err)
+
+		json.NewEncoder(w).Encode(r)
 	}
 }
 
@@ -47,10 +61,10 @@ func (d *Delivery) Handle(fn MyHandler) gin.HandlerFunc {
 		data, err := fn(c)
 
 		if err != nil {
-			handleErrorResponse(c, err)
+			handleErrorResponse(c.Writer, err)
 			return
 		}
 
-		handleSuccessResponse(c, data)
+		HandleSuccessResponse(c.Writer, data)
 	}
 }

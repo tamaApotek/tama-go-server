@@ -31,6 +31,8 @@ func main() {
 	// router.Use(cors.New(config))
 	r.Use(cors.Default())
 
+	log.SetOutput(gin.DefaultWriter)
+
 	d := delivery.Delivery{}
 
 	userRepo := user.NewRepoMongo(db)

@@ -32,17 +32,22 @@ func handleError(c *gin.Context, err error) {
 		errors.Is(err, ErrInvalidDate),
 		errors.Is(err, ErrInvalidDoctor):
 
+		r.Message = err.Error()
+
 		wrapped := errors.Unwrap(err)
 		if wrapped != nil {
-			r.Message = wrapped.Error()
+			r.Error = wrapped.Error()
+
 		} else {
-			r.Message = err.Error()
+			r.Error = err.Error()
 		}
 
 		c.JSON(http.StatusBadRequest, r)
 	default:
 		fmt.Printf("%+v\n", err)
+		r.Error = apperror.ErrInternal.Error()
 		r.Message = apperror.ErrInternal.Error()
+
 		c.JSON(http.StatusInternalServerError, r)
 	}
 }
@@ -73,6 +78,6 @@ func (h *handler) Add(c *gin.Context) {
 		return
 	}
 
-	handleSuccess(c, id)
+	delivery.HandleSuccessResponse(c.Writer, id)
 	return
 }

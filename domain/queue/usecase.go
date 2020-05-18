@@ -2,6 +2,7 @@ package queue
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/tamaApotek/tama-go-server/domain/doctor"
@@ -39,7 +40,7 @@ func (uc *usecase) Add(ctx context.Context, que *Queue) (string, error) {
 	}
 
 	if doctor == nil {
-		return "", ErrInvalidDoctor
+		return "", fmt.Errorf("%w. Doctor not found", ErrInvalidDoctor)
 	}
 
 	return uc.queueRepo.Add(ctx, que)
