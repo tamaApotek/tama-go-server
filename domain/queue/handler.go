@@ -3,13 +3,11 @@ package queue
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tamaApotek/tama-go-server/delivery"
-	"github.com/tamaApotek/tama-go-server/domain/apperror"
 )
 
 const validationFailed = "Queue validation failed"
@@ -44,11 +42,7 @@ func handleError(c *gin.Context, err error) {
 
 		c.JSON(http.StatusBadRequest, r)
 	default:
-		fmt.Printf("%+v\n", err)
-		r.Error = apperror.ErrInternal.Error()
-		r.Message = apperror.ErrInternal.Error()
-
-		c.JSON(http.StatusInternalServerError, r)
+		delivery.HandleErrorResponse(c.Writer, err)
 	}
 }
 

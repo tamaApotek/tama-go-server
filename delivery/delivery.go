@@ -32,7 +32,7 @@ func HandleSuccessResponse(w http.ResponseWriter, data interface{}) {
 	json.NewEncoder(w).Encode(r)
 }
 
-func handleErrorResponse(w http.ResponseWriter, err error) {
+func HandleErrorResponse(w http.ResponseWriter, err error) {
 	r := Response{
 		Message: "failed",
 	}
@@ -42,7 +42,6 @@ func handleErrorResponse(w http.ResponseWriter, err error) {
 		wrapped := errors.Unwrap(err)
 		if wrapped != nil {
 			r.Error = wrapped.Error()
-
 		} else {
 			r.Error = err.Error()
 		}
@@ -61,7 +60,7 @@ func (d *Delivery) Handle(fn MyHandler) gin.HandlerFunc {
 		data, err := fn(c)
 
 		if err != nil {
-			handleErrorResponse(c.Writer, err)
+			HandleErrorResponse(c.Writer, err)
 			return
 		}
 
