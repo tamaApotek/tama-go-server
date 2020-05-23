@@ -6,12 +6,15 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 
 	"github.com/tamaApotek/tama-go-server/config"
 	"github.com/tamaApotek/tama-go-server/delivery"
 	"github.com/tamaApotek/tama-go-server/domain/doctor"
 	"github.com/tamaApotek/tama-go-server/domain/queue"
 	"github.com/tamaApotek/tama-go-server/domain/user"
+	"github.com/tamaApotek/tama-go-server/internal/validation"
 )
 
 func main() {
@@ -32,6 +35,13 @@ func main() {
 	r.Use(cors.Default())
 
 	log.SetOutput(gin.DefaultWriter)
+
+	validator, ok := binding.Validator.Engine().(*validator.Validate)
+	if !ok {
+		log.Fatal("Invalid validator")
+	}
+
+	validation.Init(validator)
 
 	d := delivery.Delivery{}
 
