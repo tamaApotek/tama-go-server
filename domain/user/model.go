@@ -11,7 +11,7 @@ import (
 type User struct {
 	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	AuthID      string             `json:"auth_id" bson:"auth_id"`
-	Role        role.Role          `json:"role" bson:"role"`
+	Role        role.Role          `json:"role" bson:"role" binding:"required,role"`
 	FullName    string             `json:"full_name" bson:"full_name" validate:"required"`
 	Email       string             `json:"email" bson:"email"`
 	PhoneNumber string             `json:"phone_number" bson:"phone_number"`

@@ -29,6 +29,9 @@ func HandleSuccessResponse(w http.ResponseWriter, data interface{}) {
 		Data:    data,
 	}
 
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+
 	json.NewEncoder(w).Encode(r)
 }
 
@@ -37,8 +40,16 @@ func HandleErrorResponse(w http.ResponseWriter, err error) {
 		Message: "failed",
 	}
 
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+
 	switch {
-	case errors.Is(err, common.ErrInvalid):
+	case
+		errors.Is(err, common.ErrInvalid),
+		errors.Is(err, common.ErrInvalidBody):
+
+		w.WriteHeader(400)
+
 		wrapped := errors.Unwrap(err)
 		if wrapped != nil {
 			r.Error = wrapped.Error()
@@ -49,6 +60,8 @@ func HandleErrorResponse(w http.ResponseWriter, err error) {
 		json.NewEncoder(w).Encode(r)
 	default:
 		log.Printf("[ERROR] %+v\n", err)
+
+		w.WriteHeader(500)
 
 		json.NewEncoder(w).Encode(r)
 	}

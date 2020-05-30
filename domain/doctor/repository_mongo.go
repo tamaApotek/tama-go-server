@@ -13,10 +13,17 @@ type doctorMongo struct {
 	col *mongo.Collection
 }
 
+var repo *doctorMongo
+
 func NewRepoMongo(db *mongo.Database) Repository {
 	col := db.Collection("doctors")
 
-	return &doctorMongo{col}
+	if repo != nil {
+		return repo
+	}
+
+	repo = &doctorMongo{col}
+	return repo
 }
 
 func (dm *doctorMongo) Add(ctx context.Context, doctor *Doctor) (string, error) {
