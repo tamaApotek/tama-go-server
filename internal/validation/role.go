@@ -5,8 +5,6 @@ import (
 	"github.com/tamaApotek/tama-go-server/domain/role"
 )
 
-// const role = "role"
-
 var roleValidation validator.Func = func(fl validator.FieldLevel) bool {
 	r, ok := fl.Field().Interface().(role.Role)
 	if !ok {
@@ -16,6 +14,7 @@ var roleValidation validator.Func = func(fl validator.FieldLevel) bool {
 	return r.IsValid()
 }
 
-func validateRoleTag(v *validator.Validate) {
+// ValidateRoleTag validate valid user role
+func ValidateRoleTag(v *validator.Validate) {
 	v.RegisterValidation("role", roleValidation)
 }

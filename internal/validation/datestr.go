@@ -1,7 +1,6 @@
 package validation
 
 import (
-	"log"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -17,7 +16,6 @@ var datestrValidation validator.Func = func(fl validator.FieldLevel) bool {
 
 	_, err := time.Parse(datestrLayout, datestr)
 	if err != nil {
-		log.Printf("[ERROR] datestr validation: %v\n", err)
 		return false
 	}
 
@@ -25,6 +23,7 @@ var datestrValidation validator.Func = func(fl validator.FieldLevel) bool {
 
 }
 
-func validateDateStrTag(v *validator.Validate) {
+// ValidateDateStrTag validate date with YYYY-MM-DD format
+func ValidateDateStrTag(v *validator.Validate) {
 	v.RegisterValidation("datestr", datestrValidation)
 }

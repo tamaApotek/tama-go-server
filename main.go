@@ -14,7 +14,7 @@ import (
 	"github.com/tamaApotek/tama-go-server/domain/doctor"
 	"github.com/tamaApotek/tama-go-server/domain/queue"
 	"github.com/tamaApotek/tama-go-server/domain/user"
-	"github.com/tamaApotek/tama-go-server/internal/validation"
+	"github.com/tamaApotek/tama-go-server/internal"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 		log.Fatal("Invalid validator")
 	}
 
-	validation.Init(validator)
+	internal.InitValidation(validator)
 
 	d := delivery.Delivery{}
 
