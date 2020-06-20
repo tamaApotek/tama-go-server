@@ -14,7 +14,7 @@ type Handler struct {
 }
 
 // NewHandler will initiate user/ resources endpoint
-func NewHandler(r *gin.RouterGroup, userUsecase Usecase, delivery delivery.Delivery) {
+func NewHandler(r *gin.RouterGroup, userUsecase Usecase) {
 	handler := &Handler{userUsecase}
 
 	r.GET("/users/:user_id", handler.FindByID)

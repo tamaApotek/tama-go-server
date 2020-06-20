@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 
+	"github.com/tamaApotek/tama-go-server/bootstrap"
 	"github.com/tamaApotek/tama-go-server/config"
 	"github.com/tamaApotek/tama-go-server/delivery"
 	"github.com/tamaApotek/tama-go-server/domain/doctor"
@@ -39,6 +40,11 @@ func main() {
 	validator, ok := binding.Validator.Engine().(*validator.Validate)
 	if !ok {
 		log.Fatal("Invalid validator")
+	}
+
+	app := bootstrap.App{
+		Validator: validator,
+		Handler:   &bootstrap.Handler{},
 	}
 
 	internal.InitValidation(validator)
